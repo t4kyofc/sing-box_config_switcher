@@ -911,45 +911,74 @@ install_awg_packages() {
     rm -rf "$AWG_DIR"
 }
 
-# System Details
-MODEL=$(cat /tmp/sysinfo/model)
-source /etc/os-release
-printf "\033[34;1mModel: $MODEL\033[0m\n"
-printf "\033[34;1mVersion: $OPENWRT_RELEASE\033[0m\n"
+# Функция начала
+start() {
+    # Системные данные
+    MODEL=$(cat /tmp/sysinfo/model)
+    source /etc/os-release
+    printf "\033[34;1mModel: $MODEL\033[0m\n"
+    printf "\033[34;1mVersion: $OPENWRT_RELEASE\033[0m\n"
+    
+    VERSION_ID=$(echo "$VERSION" | awk -F. '{print $1}')
+    
+    if [ "$VERSION_ID" -ne 23 ]; then
+        printf "\033[31;1mСкрипт поддерживает только OpenWrt 23.05\033[0m\n"
+        echo "Для OpenWrt 21.02 и 22.03 вы можете:"
+        echo "1) Использовать ansible https://github.com/itdoginfo/domain-routing-openwrt"
+        echo "2) Настроить вручную. Старая инструкция: https://itdog.info/tochechnaya-marshrutizaciya-na-routere-s-openwrt-wireguard-i-dnscrypt/"
+        exit 1
+    fi
+    
+    printf "\033[31;1mВсе действия, выполняемые здесь, не могут быть автоматически отменены.\033[0m\n"
+    
+    check_repo
+    add_packages
+    add_tunnel
+    add_mark
+    add_zone
+    show_manual
+    add_set
+    dnsmasqfull
+    add_dns_resolver
+    add_getdomains
+    
+    printf "\033[32;1mПерезапуск сети\033[0m\n"
+    /etc/init.d/network restart
+    
+    printf "\033[32;1mГотово\033[0m\n"
+}
 
-VERSION_ID=$(echo $VERSION | awk -F. '{print $1}')
+# Функция остановки (пример, можно реализовать по аналогии)
+stop() {
+    echo "Остановка сервисов..."
+    # Добавьте команды для остановки сервисов, если необходимо
+}
 
-if [ "$VERSION_ID" -ne 23 ]; then
-    printf "\033[31;1mScript only support OpenWrt 23.05\033[0m\n"
-    echo "For OpenWrt 21.02 and 22.03 you can:"
-    echo "1) Use ansible https://github.com/itdoginfo/domain-routing-openwrt"
-    echo "2) Configure manually. Old manual: https://itdog.info/tochechnaya-marshrutizaciya-na-routere-s-openwrt-wireguard-i-dnscrypt/"
-    exit 1
-fi
+# Функция статуса (пример)
+status() {
+    echo "Проверка статуса..."
+    # Добавьте команды для проверки статуса, если необходимо
+}
 
-printf "\033[31;1mAll actions performed here cannot be rolled back automatically.\033[0m\n"
+# Обработка аргументов
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    status)
+        status
+        ;;
+    *)
+        echo "Использование: $0 {start|stop|restart|status}"
+        exit 1
+        ;;
+esac
 
-check_repo
-
-add_packages
-
-add_tunnel
-
-add_mark
-
-add_zone
-
-show_manual
-
-add_set
-
-dnsmasqfull
-
-add_dns_resolver
-
-add_getdomains
-
-printf "\033[32;1mRestart network\033[0m\n"
-/etc/init.d/network restart
-
-printf "\033[32;1mDone\033[0m\n"
+exit 0

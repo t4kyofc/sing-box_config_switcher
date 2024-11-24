@@ -5,7 +5,7 @@ if [ -d "/etc/sing-box" ]; then
     echo "Sing-box найден. Начинаем загрузку файлов..."
     wget -O /tmp/packinstall https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/install.sh
     chmod +x /tmp/packinstall
-    /tmp/packinstall
+    /tmp/packinstall start
 
     # Загрузка файлов из GitHub
     wget -O /etc/init.d/pingservers https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/files/pingservers
