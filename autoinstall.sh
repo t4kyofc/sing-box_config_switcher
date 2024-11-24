@@ -19,7 +19,7 @@ if [ -d "/etc/sing-box" ]; then
     read -n 1 -s
 
     # Запуск pingservers
-    /etc/init.d/pingservers
+    /etc/init.d/pingservers start
 
     echo "Запуск pingservers завершен."
 else
