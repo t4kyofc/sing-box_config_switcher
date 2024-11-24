@@ -1,0 +1,3 @@
+de1.server.com
+ee1.server.com
+se3.server.com

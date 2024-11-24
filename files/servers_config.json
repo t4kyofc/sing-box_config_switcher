@@ -1,0 +1,71 @@
+{
+  "servers": [
+    {
+      "type": "vless",
+      "tag": "NAME",
+      "server": "de1.server.com",
+      "server_port": 443,
+      "uuid": "KEY",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "de1.server.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "KEY",
+          "short_id": "KEY"
+        }
+      },
+      "packet_encoding": "xudp"
+    },
+    {
+      "type": "vless",
+      "tag": "NAME",
+      "server": "de1.server.com",
+      "server_port": 443,
+      "uuid": "KEY",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "de1.server.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "KEY",
+          "short_id": "KEY"
+        }
+      },
+      "packet_encoding": "xudp"
+    },
+    {
+      "type": "vless",
+      "tag": "NAME",
+      "server": "de1.server.com",
+      "server_port": 443,
+      "uuid": "KEY",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "de1.server.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "KEY",
+          "short_id": "KEY"
+        }
+      },
+      "packet_encoding": "xudp"
+    }
+  ]
+}
+
