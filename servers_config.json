@@ -1,0 +1,71 @@
+{
+  "servers": [
+    {
+      "type": "vless",
+      "tag": "🇩🇪 Germany #1 ⚡️10 Gbit § 0",
+      "server": "de1.gofizz.in",
+      "server_port": 443,
+      "uuid": "87356969-4917-4df7-a37d-eeaeb13366ff",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "de1.gofizz.in",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "zl_ufoBxXwRSPvxTIJEqFIIaewNT_1fYtxI9rWXRtwg",
+          "short_id": "ba15d0ae"
+        }
+      },
+      "packet_encoding": "xudp"
+    },
+    {
+      "type": "vless",
+      "tag": "🇸🇪 Sweden #3 ⚡️10 Gbit § 1",
+      "server": "se3.gofizz.in",
+      "server_port": 443,
+      "uuid": "87356969-4917-4df7-a37d-eeaeb13366ff",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "se3.gofizz.in",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "nmoHVsghroRQczCeAUcCHTNFashHmrH6DfBEEGZGzl4",
+          "short_id": "85a8a921740d"
+        }
+      },
+      "packet_encoding": "xudp"
+    },
+    {
+      "type": "vless",
+      "tag": "🇪🇪 Estonia ⚡️10 Gbit § 2",
+      "server": "ee1.gofizz.in",
+      "server_port": 443,
+      "uuid": "87356969-4917-4df7-a37d-eeaeb13366ff",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "ee1.gofizz.in",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "z46-GwLD2TvzK2o95okMP7IMNPUfwYHmqt2JV6nJ03I",
+          "short_id": "8c9f899dba63f6c7"
+        }
+      },
+      "packet_encoding": "xudp"
+    }
+  ]
+}
+
