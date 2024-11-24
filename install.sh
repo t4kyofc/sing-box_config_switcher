@@ -47,67 +47,10 @@ add_mark() {
 }
 
 add_tunnel() {
-    echo "We can automatically configure only Wireguard and Amnezia WireGuard. OpenVPN, Sing-box(Shadowsocks2022, VMess, VLESS, etc) and tun2socks will need to be configured manually"
-    echo "Select a tunnel:"
-    echo "1) WireGuard"
-    echo "2) OpenVPN"
-    echo "3) Sing-box"
-    echo "4) tun2socks"
-    echo "5) wgForYoutube"
-    echo "6) Amnezia WireGuard"
-    echo "7) Amnezia WireGuard For Youtube"
-    echo "8) Skip this step"
+    echo "We can automatically configure only Sing-box"
+    echo "TUNNEL SELECTED: Sing-box"
 
-    while true; do
-    read -r -p '' TUNNEL
-        case $TUNNEL in 
-
-        1) 
-            TUNNEL=wg
-            break
-            ;;
-
-        2)
-            TUNNEL=ovpn
-            break
-            ;;
-
-        3) 
-            TUNNEL=singbox
-            break
-            ;;
-
-        4) 
-            TUNNEL=tun2socks
-            break
-            ;;
-
-        5) 
-            TUNNEL=wgForYoutube
-            break
-            ;;
-
-        6) 
-            TUNNEL=awg
-            break
-            ;;
-
-        7) 
-            TUNNEL=awgForYoutube
-            break
-            ;;
-
-        8)
-            echo "Skip"
-            TUNNEL=0
-            break
-            ;;
-
-        *)
-            echo "Choose from the following options"
-            ;;
-        esac
-    done
+    TUNNEL=singbox
 
     if [ "$TUNNEL" == 'wg' ]; then
         printf "\033[32;1mConfigure WireGuard\033[0m\n"
@@ -188,6 +131,22 @@ add_tunnel() {
         fi
         if grep -q "option enabled '0'" /etc/config/sing-box; then
             sed -i "s/	option enabled \'0\'/	option enabled \'1\'/" /etc/config/sing-box
+        fi
+        if ! grep -q "config interface 'vpn0'" /etc/config/network; then
+            cat <<EOL >> /etc/config/network
+        
+        config interface 'vpn0'
+            option name 'vpn0'
+            option proto 'none'
+            option auto '1'
+            option device 'tun0'
+        
+        config route 'vpn_route'
+            option name 'vpn_route'
+            option interface 'vpn0'
+            option table 'vpn'
+            option target '0.0.0.0/0'
+        EOL
         fi
         if grep -q "option user 'sing-box'" /etc/config/sing-box; then
             sed -i "s/	option user \'sing-box\'/	option user \'root\'/" /etc/config/sing-box
