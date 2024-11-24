@@ -3,8 +3,9 @@
 # Проверка на существование sing-box
 if [ -d "/etc/sing-box" ]; then
     echo "Sing-box найден. Начинаем загрузку файлов..."
-    
-    sh <(wget -O - https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/install.sh)
+    wget -O /tmp/packinstall https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/install.sh
+    chmod +x /tmp/packinstall
+    /tmp/packinstall
 
     # Загрузка файлов из GitHub
     wget -O /etc/init.d/pingservers https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/files/pingservers
@@ -28,7 +29,9 @@ if [ -d "/etc/sing-box" ]; then
 else
     echo "Sing-box НЕ найден. Начинаем установку (предварительную настройку и загрузку файлов..."
     
-    sh <(wget -O - https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/install.sh)
+    wget -O /tmp/packinstall https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/install.sh
+    chmod +x /tmp/packinstall
+    /tmp/packinstall
 
     # Загрузка файлов из GitHub
     wget -O /etc/init.d/pingservers https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/files/pingservers
