@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Проверка на существование sing-box
-if [ -d "/path/to/sing-box" ]; then
+if [ -d "/etc/sing-box" ]; then
     echo "Sing-box найден. Начинаем загрузку файлов..."
 
     # Загрузка файлов из GitHub
