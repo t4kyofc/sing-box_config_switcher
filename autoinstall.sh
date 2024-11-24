@@ -5,9 +5,9 @@ if [ -d "/etc/sing-box" ]; then
     echo "Sing-box найден. Начинаем загрузку файлов..."
 
     # Загрузка файлов из GitHub
-    wget -O /etc/init.d/pingservers https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/main/files/pingservers
-    wget -O /etc/init.d/servers.txt https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/main/files/servers.txt
-    wget -O /etc/init.d/servers_config.json https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/main/files/servers_config.json
+    wget -O /etc/init.d/pingservers https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/files/pingservers
+    wget -O /etc/init.d/servers.txt https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/files/servers.txt
+    wget -O /etc/init.d/servers_config.json https://raw.githubusercontent.com/t4kyofc/sing-box_config_switcher/refs/heads/mmain/files/servers_config.json
 
     # Делаем файл pingservers исполняемым
     chmod +x /etc/init.d/pingservers
