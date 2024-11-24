@@ -13,7 +13,8 @@ if [ -d "/etc/sing-box" ]; then
     chmod +x /etc/init.d/pingservers
 
     echo "Пожалуйста, заполните файлы servers_config.json и servers.txt"
-    echo "Нажмите любое клавиша для продолжения после заполнения..."
+    read -n 1 -s -r -p "Нажмите любую клавишу для продолжения..."
+
 
     # Ожидание нажатия клавиши
     read -n 1 -s
