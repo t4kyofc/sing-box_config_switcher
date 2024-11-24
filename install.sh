@@ -47,10 +47,67 @@ add_mark() {
 }
 
 add_tunnel() {
-    echo "We can automatically configure only Sing-box"
-    echo "TUNNEL SELECTED: Sing-box"
+    echo "We can automatically configure only Wireguard and Amnezia WireGuard. OpenVPN, Sing-box(Shadowsocks2022, VMess, VLESS, etc) and tun2socks will need to be configured manually"
+    echo "Select a tunnel:"
+    echo "1) WireGuard"
+    echo "2) OpenVPN"
+    echo "3) Sing-box"
+    echo "4) tun2socks"
+    echo "5) wgForYoutube"
+    echo "6) Amnezia WireGuard"
+    echo "7) Amnezia WireGuard For Youtube"
+    echo "8) Skip this step"
 
-    TUNNEL=singbox
+    while true; do
+    read -r -p '' TUNNEL
+        case $TUNNEL in 
+
+        1) 
+            TUNNEL=wg
+            break
+            ;;
+
+        2)
+            TUNNEL=ovpn
+            break
+            ;;
+
+        3) 
+            TUNNEL=singbox
+            break
+            ;;
+
+        4) 
+            TUNNEL=tun2socks
+            break
+            ;;
+
+        5) 
+            TUNNEL=wgForYoutube
+            break
+            ;;
+
+        6) 
+            TUNNEL=awg
+            break
+            ;;
+
+        7) 
+            TUNNEL=awgForYoutube
+            break
+            ;;
+
+        8)
+            echo "Skip"
+            TUNNEL=0
+            break
+            ;;
+
+        *)
+            echo "Choose from the following options"
+            ;;
+        esac
+    done
 
     if [ "$TUNNEL" == 'wg' ]; then
         printf "\033[32;1mConfigure WireGuard\033[0m\n"
@@ -131,22 +188,6 @@ add_tunnel() {
         fi
         if grep -q "option enabled '0'" /etc/config/sing-box; then
             sed -i "s/	option enabled \'0\'/	option enabled \'1\'/" /etc/config/sing-box
-        fi
-        if ! grep -q "config interface 'vpn0'" /etc/config/network; then
-            cat <<EOL >> /etc/config/network
-        
-        config interface 'vpn0'
-            option name 'vpn0'
-            option proto 'none'
-            option auto '1'
-            option device 'tun0'
-        
-        config route 'vpn_route'
-            option name 'vpn_route'
-            option interface 'vpn0'
-            option table 'vpn'
-            option target '0.0.0.0/0'
-        EOL
         fi
         if grep -q "option user 'sing-box'" /etc/config/sing-box; then
             sed -i "s/	option user \'sing-box\'/	option user \'root\'/" /etc/config/sing-box
@@ -911,74 +952,45 @@ install_awg_packages() {
     rm -rf "$AWG_DIR"
 }
 
-# Функция начала
-start() {
-    # Системные данные
-    MODEL=$(cat /tmp/sysinfo/model)
-    source /etc/os-release
-    printf "\033[34;1mModel: $MODEL\033[0m\n"
-    printf "\033[34;1mVersion: $OPENWRT_RELEASE\033[0m\n"
-    
-    VERSION_ID=$(echo "$VERSION" | awk -F. '{print $1}')
-    
-    if [ "$VERSION_ID" -ne 23 ]; then
-        printf "\033[31;1mСкрипт поддерживает только OpenWrt 23.05\033[0m\n"
-        echo "Для OpenWrt 21.02 и 22.03 вы можете:"
-        echo "1) Использовать ansible https://github.com/itdoginfo/domain-routing-openwrt"
-        echo "2) Настроить вручную. Старая инструкция: https://itdog.info/tochechnaya-marshrutizaciya-na-routere-s-openwrt-wireguard-i-dnscrypt/"
-        exit 1
-    fi
-    
-    printf "\033[31;1mВсе действия, выполняемые здесь, не могут быть автоматически отменены.\033[0m\n"
-    
-    check_repo
-    add_packages
-    add_tunnel
-    add_mark
-    add_zone
-    show_manual
-    add_set
-    dnsmasqfull
-    add_dns_resolver
-    add_getdomains
-    
-    printf "\033[32;1mПерезапуск сети\033[0m\n"
-    /etc/init.d/network restart
-    
-    printf "\033[32;1mГотово\033[0m\n"
-}
+# System Details
+MODEL=$(cat /tmp/sysinfo/model)
+source /etc/os-release
+printf "\033[34;1mModel: $MODEL\033[0m\n"
+printf "\033[34;1mVersion: $OPENWRT_RELEASE\033[0m\n"
 
-# Функция остановки (пример, можно реализовать по аналогии)
-stop() {
-    echo "Остановка сервисов..."
-    # Добавьте команды для остановки сервисов, если необходимо
-}
+VERSION_ID=$(echo $VERSION | awk -F. '{print $1}')
 
-# Функция статуса (пример)
-status() {
-    echo "Проверка статуса..."
-    # Добавьте команды для проверки статуса, если необходимо
-}
+if [ "$VERSION_ID" -ne 23 ]; then
+    printf "\033[31;1mScript only support OpenWrt 23.05\033[0m\n"
+    echo "For OpenWrt 21.02 and 22.03 you can:"
+    echo "1) Use ansible https://github.com/itdoginfo/domain-routing-openwrt"
+    echo "2) Configure manually. Old manual: https://itdog.info/tochechnaya-marshrutizaciya-na-routere-s-openwrt-wireguard-i-dnscrypt/"
+    exit 1
+fi
 
-# Обработка аргументов
-case "$1" in
-    start)
-        start
-        ;;
-    stop)
-        stop
-        ;;
-    restart)
-        stop
-        start
-        ;;
-    status)
-        status
-        ;;
-    *)
-        echo "Использование: $0 {start|stop|restart|status}"
-        exit 1
-        ;;
-esac
+printf "\033[31;1mAll actions performed here cannot be rolled back automatically.\033[0m\n"
 
-exit 0
+check_repo
+
+add_packages
+
+add_tunnel
+
+add_mark
+
+add_zone
+
+show_manual
+
+add_set
+
+dnsmasqfull
+
+add_dns_resolver
+
+add_getdomains
+
+printf "\033[32;1mRestart network\033[0m\n"
+/etc/init.d/network restart
+
+printf "\033[32;1mDone\033[0m\n"
